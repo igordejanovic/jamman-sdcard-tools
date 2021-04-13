@@ -1,0 +1,27 @@
+#!/bin/sh
+# This script syncs all loops from the JAMMAN SD card to the local computer folder.
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$DIR"/jamman-config
+JAMMAN_ROOT="$JAMMAN_MOUNT/JamManSoloXT"
+
+echo "Syncing from SD card to local"
+for i in {01..99}; do
+    PATCH_SOURCE="$JAMMAN_ROOT/Patch$i"
+    PATCH_TARGET="$JAMMAN_LOCAL/Patch$i"
+    if [ -d "$PATCH_SOURCE" ]; then
+
+        if [ -f "$PATCH_TARGET/.fromfile" ]; then
+            FROMFILE="-- $(<$PATCH_TARGET/.fromfile)"
+        else
+            FROMFILE=""
+        fi
+
+        if [ ! -f "$PATCH_TARGET/.new" ]; then
+            echo "Patch $i $FROMFILE"
+            rsync -q --recursive --delete --exclude=".*" "$PATCH_SOURCE/" "$PATCH_TARGET/"
+        else
+            echo "Patch $i - skipping $FROMFILE"
+        fi
+    fi
+done

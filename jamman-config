@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Change this to folder on your local machine where 
+# the loops are stored
+JAMMAN_LOCAL="/home/igor/4Muzika/JammManLoops"
+
+# This should be the default mount location on recent linux distros.
+# Change if necessary
+JAMMAN_MOUNT="/run/media/`whoami`/JAMMAN"

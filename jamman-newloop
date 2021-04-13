@@ -1,0 +1,37 @@
+#!/bin/sh
+# This scipt accepts a file in audio format and a loop number in XX format
+# If target loop doesn't exist the scrit will copy directory structure of loop 01
+# Afterwards it will convert the audio file to appropriate format and copy it to
+# phrase.wav of the given target loop.
+
+usage() {
+        echo "jamman-newloop"
+        echo "usage: $0 <input audio file> <loop number>"
+        echo "e.g."
+        echo "$0 myloop.mp3 07"
+}
+
+if [ "$#" -ne 2 ]; then
+    usage
+    exit 0
+fi
+
+INPUTFILE=$1
+LOOPNO=$2
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$DIR"/jamman-config
+
+TARGET_LOOP_FOLDER=$JAMMAN_LOCAL/Patch$LOOPNO
+
+if [ ! -d "$TARGET_LOOP_FOLDER" ]; then
+    echo "Creating folder structure for loop $LOOPNO"
+    cp -R "$JAMMAN_LOCAL"/Patch01 "$TARGET_LOOP_FOLDER"
+fi
+
+echo "Converting input file..."
+ffmpeg -i "$INPUTFILE" -y -loglevel error -acodec pcm_s16le -ac 2 -ar 44100 -map_metadata -1 "$TARGET_LOOP_FOLDER"/PhraseA/phrase.wav
+echo "$INPUTFILE" > "$TARGET_LOOP_FOLDER"/.fromfile
+touch "$TARGET_LOOP_FOLDER"/.new
+
+echo "Created $TARGET_LOOP_FOLDER/PhraseA/phrase.wav"

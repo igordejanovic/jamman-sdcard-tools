@@ -1,0 +1,25 @@
+#!/bin/sh
+# This script mark the given loop for transfer to SD card by
+# creating .new file
+
+usage() {
+        echo "jamman-force"
+        echo "usage: jamman-force <loop number>"
+        echo "e.g."
+        echo "jamman-force 07"
+}
+
+if [ "$#" -ne 1 ]; then
+    usage
+    exit 0
+fi
+
+LOOPNO=$1
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$DIR/jamman-config"
+
+TARGET_LOOP_FOLDER=$JAMMAN_LOCAL/Patch$LOOPNO
+
+echo "Marking loop $LOOPNO for transfer to SD card"
+touch "$TARGET_LOOP_FOLDER"/.new
