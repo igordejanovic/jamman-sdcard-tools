@@ -9,6 +9,8 @@ for i in {01..99}; do
     if [ -d "$PATCH_SOURCE" ]; then
         if [ -f "$PATCH_SOURCE/.fromfile" ]; then
             FROMFILE=$(<$PATCH_SOURCE/.fromfile)
+        else
+            FROMFILE=""
         fi
         echo "$i -- $FROMFILE"
     fi
