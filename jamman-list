@@ -1,0 +1,15 @@
+#!/bin/sh
+# This script list all local loops with .filefrom info
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$DIR/jamman-config"
+
+for i in {01..99}; do
+    PATCH_SOURCE="$JAMMAN_LOCAL/Patch$i"
+    if [ -d "$PATCH_SOURCE" ]; then
+        if [ -f "$PATCH_SOURCE/.fromfile" ]; then
+            FROMFILE=$(<$PATCH_SOURCE/.fromfile)
+        fi
+        echo "$i -- $FROMFILE"
+    fi
+done

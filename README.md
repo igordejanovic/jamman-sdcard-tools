@@ -106,10 +106,26 @@ jamman-sync-to
 
 Unmount SD card, put it in your looper and you are ready to jam! :)
 
+### Bonus
 
-**Note:** when a new loop is created (or loop is updated) by `jamman-newloop` a
-name of the input file as well as from-time/to-time is keept in a file
-`.fromfile` (this file is not synced to the SD card, it exists only in
-`JAMMAN_LOCAL`). This is used to print nice messages during syncing but you can
-use this file as a reminder what a particular loop is. In the future it would be
-possible to automatically produce a nice cheat-sheet with info for each loop.
+When a new loop is created (or loop is updated) by `jamman-newloop` a name of
+the input file as well as from-time/to-time is keept in a file `.fromfile` (this
+file is not synced to the SD card, it exists only in `JAMMAN_LOCAL`). This is
+used to print nice messages during syncing but you can use this file as a
+reminder what a particular loop is or to list all loops with this info using
+the `jamman-list` script.
+
+For example:
+
+``` sh
+# To get the full list
+$ jamman-list > loops-list.txt
+
+# Or to quickly find a loop
+$ jamman-list | grep -i suzie
+11 -- Creedence Clearwater Revival - Suzie Q-1mxaA-bJ35s.mp3
+
+# Or to see what is in loop 12
+$ jamman-list | grep ^12
+12 -- Sweet Home Chicago style  E Blues Backing Track-J106bXVtKoQ.mp3
+```
