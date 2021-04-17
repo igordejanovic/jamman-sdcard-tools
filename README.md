@@ -106,6 +106,7 @@ jamman-sync-to
 
 Unmount SD card, put it in your looper and you are ready to jam! :)
 
+
 ### Bonus
 
 When a new loop is created (or loop is updated) by `jamman-newloop` a name of
@@ -129,3 +130,28 @@ $ jamman-list | grep -i suzie
 $ jamman-list | grep ^12
 12 -- Sweet Home Chicago style  E Blues Backing Track-J106bXVtKoQ.mp3
 ```
+
+
+### Creating loops from YouTube videos
+
+You can create loops directly from YouTube videos by `jamman-yt` script. It
+works the same as `jamman-newloop` but the first param is not local file but a
+URL to a YT video.
+
+For example:
+
+``` sh
+# Download audio from the given link and store it as loop number 07
+jamman-yt 'https://www.youtube.com/watch?v=8Pa9x9fZBtY' 07
+```
+
+You can also just take the part of the video:
+
+
+``` sh
+# Download audio, extract just the given time span and store it as loop 07
+jamman-yt 'https://www.youtube.com/watch?v=8Pa9x9fZBtY' 07 9:29 9:47
+```
+
+This script calls [youtube-dl](https://youtube-dl.org/) so be sure to install it
+before using this script.

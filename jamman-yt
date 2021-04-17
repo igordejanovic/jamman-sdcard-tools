@@ -1,0 +1,45 @@
+#!/bin/sh
+# This scipt accepts YouTube URL and a loop number in XX format
+# It downloads audio from YouTube and then calls jamman-newloop
+# This script uses youtube-dl for download.
+
+usage() {
+    SCRIPT=`basename "$0"`
+    echo "$SCRIPT: creates a new loop from the given YouTube URL"
+    echo "usage: $SCRIPT <YT URL> <loop number>"
+    echo
+    echo "e.g."
+    echo "$SCRIPT 'https://www.youtube.com/watch?v=8Pa9x9fZBtY' 07"
+    echo
+    echo "Optionally you can add time-from time-to params at the end to cut only"
+    echo "a part of the file."
+    echo "e.g."
+    echo "$SCRIPT 'https://www.youtube.com/watch?v=8Pa9x9fZBtY' 07 9:29 9:47"
+}
+
+if [ "$#" -lt 2 ]; then
+    usage
+    exit 0
+fi
+
+URL=$1
+LOOPNO=$2
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$DIR"/jamman-config
+
+tmpdir=$(mktemp -d "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
+
+youtube-dl --extract-audio --audio-format wav "$URL" -o "$tmpdir/%(title)s-%(id)s.%(ext)s"
+
+INPUTFILE=$(ls $tmpdir/*.wav)
+if [ "$#" -gt 2 ]; then
+    FROM=$3
+    TO=$4
+    "$DIR"/jamman-newloop "$INPUTFILE" $LOOPNO $FROM $TO
+else
+    "$DIR"/jamman-newloop "$INPUTFILE" $LOOPNO
+fi
+
+# Cleanup
+rm -fr "$tmpdir"
