@@ -37,14 +37,15 @@ if [ ! -d "$TARGET_LOOP_FOLDER" ]; then
 fi
 
 echo "Converting input file..."
+FROMFILE=$(basename "$INPUTFILE")
 if [ "$#" -gt 2 ]; then
     FROM=$3
     TO=$4
     ffmpeg -i "$INPUTFILE" -y -loglevel error -ss $FROM -to $TO -acodec pcm_s16le -ac 2 -ar 44100 -map_metadata -1 "$TARGET_LOOP_FOLDER"/PhraseA/phrase.wav
-    echo "$INPUTFILE [$FROM-$TO]" > "$TARGET_LOOP_FOLDER"/.fromfile
+    echo "$FROMFILE [$FROM-$TO]" > "$TARGET_LOOP_FOLDER"/.fromfile
 else
     ffmpeg -i "$INPUTFILE" -y -loglevel error -acodec pcm_s16le -ac 2 -ar 44100 -map_metadata -1 "$TARGET_LOOP_FOLDER"/PhraseA/phrase.wav
-    echo "$INPUTFILE" > "$TARGET_LOOP_FOLDER"/.fromfile
+    echo "$FROMFILE" > "$TARGET_LOOP_FOLDER"/.fromfile
 fi
 touch "$TARGET_LOOP_FOLDER"/.new
 
