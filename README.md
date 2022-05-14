@@ -153,5 +153,5 @@ You can also just take the part of the video:
 jamman-yt 'https://www.youtube.com/watch?v=8Pa9x9fZBtY' 07 9:29 9:47
 ```
 
-This script calls [youtube-dl](https://youtube-dl.org/) so be sure to install it
+This script calls [yt-dlp](https://github.com/yt-dlp/yt-dlp) so be sure to install it
 before using this script.

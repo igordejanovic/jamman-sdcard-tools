@@ -1,7 +1,7 @@
 #!/bin/sh
 # This scipt accepts YouTube URL and a loop number in XX format
 # It downloads audio from YouTube and then calls jamman-newloop
-# This script uses youtube-dl for download.
+# This script uses yt-dlp for download.
 
 usage() {
     SCRIPT=`basename "$0"`
@@ -30,7 +30,7 @@ source "$DIR"/jamman-config
 
 tmpdir=$(mktemp -d "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
 
-youtube-dl --extract-audio --audio-format wav "$URL" -o "$tmpdir/%(title)s-%(id)s.%(ext)s"
+yt-dlp --extract-audio --audio-format wav "$URL" -o "$tmpdir/%(title)s-%(id)s.%(ext)s"
 
 INPUTFILE=$(ls $tmpdir/*.wav)
 if [ "$#" -gt 2 ]; then
